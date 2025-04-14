@@ -228,6 +228,12 @@ public class GPUPixel {
     public static native long nativeSourceRawDataNew();
     public static native void nativeSourceRawDataUploadBytes(final long classID, final int[] pixel, final int width, final int height, final int stride);
     public static native void nativeSourceRawDataSetRotation(final long classID, final int rotation);
+    // input
+    public static native long nativeInputData();
+    public static native void nativeInputDataProcess(final long classID, int textureId, final int width, final int height);
+    // output
+    public static native long nativeOutputData();
+    public static native int nativeOutputDataGetTextureId(final long classID);
 
     // Source
     public static native long nativeSourceAddSink(final long classID, final long targetClassID, final int texID, final boolean isFilter);

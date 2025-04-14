@@ -13,6 +13,7 @@
 #include "source_image.h"
 #include "source_raw_data.h"
 #include "sink_render.h"
+#include "source_raw_texture_data.h"
 
 using namespace gpupixel;
 std::list<std::shared_ptr<Filter>>  filter_list_;
@@ -116,6 +117,38 @@ Java_com_pixpark_gpupixel_GPUPixel_nativeSourceRawDataSetRotation(
     jlong classId,
     jint rotation) {
   ((SourceRawData*)classId)->setRotation((RotationMode)rotation);
+};
+
+extern "C" jlong Java_com_pixpark_gpupixel_GPUPixel_nativeOutputData(
+        JNIEnv* env,
+        jclass obj) {
+    return (uintptr_t)(new SinkRawTextureData());
+};
+
+extern "C" int
+Java_com_pixpark_gpupixel_GPUPixel_nativeOutputDataGetTextureId(
+        JNIEnv* env,
+        jclass,
+        jlong classId) {
+    GLuint textureId = ((SinkRawTextureData*)classId)->getOutputTextureId();
+    return textureId;
+};
+
+extern "C" jlong Java_com_pixpark_gpupixel_GPUPixel_nativeInputData(
+        JNIEnv* env,
+        jclass obj) {
+    return (uintptr_t)(new SourceRawTextureData());
+};
+
+extern "C" void
+Java_com_pixpark_gpupixel_GPUPixel_nativeInputDataProcess(
+        JNIEnv* env,
+        jclass,
+        jlong classId,
+        int texture,
+        jint width,
+        jint height) {
+    ((SourceRawTextureData*)classId)->processData(texture, width, height);
 };
 
 extern "C" jlong Java_com_pixpark_gpupixel_GPUPixel_nativeSourceAddSink(
